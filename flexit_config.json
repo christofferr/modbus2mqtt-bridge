@@ -1,0 +1,123 @@
+{
+	"mqtt_settings":{
+	"server_adress":"adress",
+	"server_port":"1883",
+	"server_user":"username",
+	"server_password":"password",
+	"basetopic":"82/ventilasjon/"
+},
+"modbus_settings":{
+	"server_adress":"adress",
+	"server_port":"26",
+	"unit_id":"1"
+},
+
+"holding_registers":{
+	"1":{
+		"name":"Supply_Air_Speed_1",
+		"writeable":"True"
+	},
+	"2":{
+		"name":"Supply_Air_Speed_2",
+		"writeable":"True"
+	},
+	"3":{
+		"name":"Supply_Air_Speed_3",
+		"writeable":"True",
+		"type":"int16"
+	},
+	"4":{
+		"name":"Supply_Air_Speed_4",
+		"writeable":"True",
+		"type":"int16"
+	},
+	"5":{
+		"name":"Extract_Air_Speed_1",
+		"writeable":"True",
+		"type":"int16"
+	},
+	"6":{
+		"name":"Extract_Air_Speed_2",
+		"writeable":"True",
+		"type":"int16"
+	},
+	"7":{
+		"name":"Extract_Air_Speed_3",
+		"writeable":"True",
+		"type":"int16"
+	},
+	"8":{
+		"name":"Extract_Air_Speed_4",
+		"writeable":"True",
+		"type":"int16"
+	},
+	"9":{
+		"name":"Set_Air_Temperature",
+		"writeable":"True",
+		"type":"int16"
+	},
+	"10":{
+		"name":"Supply_Air_Min_Temp",
+		"writeable":"True",
+		"type":"int16"
+	},
+	"11":{
+		"name":"Supply_Air_Max_Temp",
+		"writeable":"True",
+		"type":"int16"
+	},
+	"12":{
+		"name":"Cooling_Outdoor_Air_Min_temp",
+		"writeable":"True",
+		"type":"int16"
+	},
+	"13":{
+		"name":"Forced_Vent_Speed",
+		"writeable":"True",
+		"type":"int16"
+	},
+	"14":{
+		"name":"Forced Vent_Time",
+		"writeable":"True",
+		"type":"int16"
+	},
+	"15":{
+		"name":"Air_Regulation_Type",
+		"writeable":"True",
+		"type":"int16"
+	},
+	"16":{
+		"name":"Cooling_Active",
+		"writeable":"True",
+		"type":"int16"
+	},
+	"17":{
+		"name":"Forced_Ventilation",
+		"writeable":"True",
+		"type":"int16"
+	},
+	"18":{
+		"name":"Set_Air_Speed",
+		"writeable":"True",
+		"type":"int16"
+	},
+	"19":{
+		"name":"Time",
+		"writeable":"False",
+		"type":"uint32"
+	},
+	"22":{
+		"name":"Fire_Smoke_Mode",
+		"writeable":"True",
+		"type":"int16"
+	}
+},
+"input_registers":{
+	"1":{
+		"name":"Cooling_Active",
+		"writeable":"True",
+		"type":"int16"
+	}
+
+}
+}
