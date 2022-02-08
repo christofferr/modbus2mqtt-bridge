@@ -5,18 +5,18 @@ from multiprocessing import Process, Queue
 import process_funk
 
 
-# Koble til Modbus
+
 if __name__ == '__main__':
 
-	config_file = "flexit_config.json"
+	config_file = "flexit_config_2.json" ## Change this to the config file you would like to use
 	with open(config_file, "r") as in_file:
 	    settings = json.loads(in_file.read())
 					
+#Creating queues to transfer data between the three processes
 	mqtt_receiver_queue = Queue()
-	mqtt_receiver_to_proxy_queue = Queue()
 	mqtt_sender_queue = Queue()
 
-
+#Declaring the variables and datas to store holding register and input register data
 	holding_registers = {}
 	holding_start = True
 	holding_start_int = 0
@@ -25,9 +25,12 @@ if __name__ == '__main__':
 	input_start = True
 	input_start_int = 0
 
+#Declaring the final output variable holders
 	final_outdata = {}
 	final_outdata['holding_registers'] = {}
 	final_outdata['input_registers'] = {}
+
+#Creating the modbus instance
 	c = ModbusClient(host=settings['modbus_settings']['server_adress'], port=settings['modbus_settings']['server_port'], unit_id=settings['modbus_settings']['unit_id'], auto_open=True)
 
 	#Making packets for holding registers
@@ -77,14 +80,13 @@ if __name__ == '__main__':
 				elif settings['input_registers'][adress]['size'] == "32": # If data is 32 bits two registers is added to package
 					input_registers[adress] = 2
 
-	mqtt_receiver_process = Process(target=process_funk.mqtt_receiver, args=(mqtt_receiver_queue, settings))
+#Starting processes for sending and receiving MQTT data
+	mqtt_receiver_process = Process(target=process_funk.mqtt_receiver, args=(mqtt_receiver_queue, settings)) 
 	mqtt_receiver_process.start()
 	time.sleep(1)
 	mqtt_sender_process = Process(target=process_funk.mqtt_sender, args=(mqtt_sender_queue, settings))
 	mqtt_sender_process.start()
 
-	mqtt_proxy  = Process(target=process_funk.mqtt_proxy, args=(mqtt_receiver_to_proxy_queue, mqtt_receiver_to_proxy_queue, settings))
-	#mqtt_proxy.start()
 
 
 	while True: #Main loop starts here
