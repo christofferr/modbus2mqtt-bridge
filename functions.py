@@ -19,12 +19,12 @@ def intjoiner16bto32bit(high_byte, low_byte): #simple function that joins two 16
 	return(final_value)
 
 def uinttoint16bit(byte): #This function converts a raw 16bit value from uint to int
-	byte_bits = "{:016}".format(int(byte))
-	byte_value = "{:015}".format(int(byte))
-	sign = byte_bits[0]
+	byte_bits = "{:016b}".format(int(byte))
+	byte_value = "{:015b}".format(int(byte))
+	sign = str(byte_bits[0])
 	if sign == "0":
-		final_value = byte_value
+		final_value = int(byte_value, 2)
 	else:
-		final_value = float(0 - int(byte_value))
+		final_value = float(0 - int(byte_value, 2))
 
 	return(final_value)
