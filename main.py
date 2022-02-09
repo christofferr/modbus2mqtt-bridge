@@ -9,7 +9,7 @@ import functions
 
 if __name__ == '__main__':
 
-	config_file = "flexit_config.json" ## Change this to the config file you would like to use
+	config_file = "flexit_config_2.json" ## Change this to the config file you would like to use
 	with open(config_file, "r") as in_file:
 	    settings = json.loads(in_file.read())
 					
@@ -66,7 +66,7 @@ if __name__ == '__main__':
 
 			final_outdata['holding_registers'] = functions.register_loop(settings['holding_registers'], c, "holding", holding_registers) #Reading holding registers
 
-			time.sleep(1/10) #Sleeping between holding and input registers as some units need this
+			#time.sleep(1/10) #Sleeping between holding and input registers as some units need this
 
 
 			final_outdata['input_registers'] = functions.register_loop(settings['input_registers'], c, "input", input_registers) #Reading input registers
