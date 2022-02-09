@@ -22,226 +22,262 @@
 		"writeable":"True",
 		"size":"16",
 		"unit":"%",
-		"scaling":"1"
+		"scaling":"1",
+		"signed":"True"
 	},
 	"1":{
 		"name":"Supply_Air_Speed_2",
 		"writeable":"True",
 		"size":"16",
 		"unit":"%",
-		"scaling":"1"
+		"scaling":"1",
+		"signed":"True"
 	},
 	"2":{
 		"name":"Supply_Air_Speed_3",
 		"writeable":"True",
 		"size":"16",
 		"unit":"%",
-		"scaling":"1"
+		"scaling":"1",
+		"signed":"True"
 	},
 	"3":{
 		"name":"Supply_Air_Speed_4",
 		"writeable":"True",
 		"size":"16",
-		"scaling":"1"
+		"scaling":"1",
+		"signed":"True"
 	},
 	"4":{
 		"name":"Extract_Air_Speed_1",
 		"writeable":"True",
 		"size":"16",
 		"unit":"%",
-		"scaling":"1"
+		"scaling":"1",
+		"signed":"True"
 	},
 	"5":{
 		"name":"Extract_Air_Speed_2",
 		"writeable":"True",
 		"size":"16",
 		"unit":"%",
-		"scaling":"1"
+		"scaling":"1",
+		"signed":"True"
 	},
 	"6":{
 		"name":"Extract_Air_Speed_3",
 		"writeable":"True",
 		"size":"16",
 		"unit":"%",
-		"scaling":"1"
+		"scaling":"1",
+		"signed":"True"
 	},
 	"7":{
 		"name":"Extract_Air_Speed_4",
 		"writeable":"True",
 		"size":"16",
-		"scaling":"1"
+		"scaling":"1",
+		"signed":"True"
 	},
 	"8":{
 		"name":"Set_Air_Temperature",
 		"writeable":"True",
 		"size":"16",
 		"unit":"°C",
-		"scaling":"10"
+		"scaling":"10",
+		"signed":"True"
 	},
 	"9":{
 		"name":"Supply_Air_Min_Temp",
 		"writeable":"True",
 		"size":"16",
 		"unit":"°C",
-		"scaling":"10"
+		"scaling":"10",
+		"signed":"True"
 	},
 	"10":{
 		"name":"Supply_Air_Max_Temp",
 		"writeable":"True",
 		"size":"16",
 		"unit":"°C",
-		"scaling":"10"
+		"scaling":"10",
+		"signed":"True"
 	},
 	"11":{
 		"name":"Cooling_Outdoor_Air_Min_temp",
 		"writeable":"True",
 		"size":"16",
 		"unit":"°C",
-		"scaling":"10"
+		"scaling":"10",
+		"signed":"True"
 	},
 	"12":{
 		"name":"Forced_Vent_Speed",
 		"writeable":"True",
 		"size":"16",
-		"scaling":"1"
+		"scaling":"1",
+		"signed":"True"
 	},
 	"13":{
 		"name":"Forced Vent_Time",
 		"writeable":"True",
 		"size":"16",
 		"unit":"min",
-		"scaling":"1"
+		"scaling":"1",
+		"signed":"True"
 	},
 	"14":{
 		"name":"Air_Regulation_Type",
 		"writeable":"True",
 		"size":"16",
 		"unit":"bool",
-		"scaling":"1"
+		"scaling":"1",
+		"signed":"True"
 	},
 	"15":{
 		"name":"Cooling_Active",
 		"writeable":"True",
 		"size":"16",
 		"unit":"bool",
-		"scaling":"1"
+		"scaling":"1",
+		"signed":"True"
 	},
 	"16":{
 		"name":"Forced_Ventilation",
 		"writeable":"True",
 		"size":"16",
 		"unit":"bool",
-		"scaling":"1"
+		"scaling":"1",
+		"signed":"True"
 	},
 	"17":{
 		"name":"Set_Air_Speed",
 		"writeable":"True",
 		"size":"16",
-		"scaling":"1"
+		"scaling":"1",
+		"signed":"True"
 	},
 	"18":{
 		"name":"Time",
 		"writeable":"False",
 		"size":"32",
 		"unit":"s",
-		"scaling":"1"
+		"scaling":"1",
+		"signed":"False"
 	},
 	"21":{
 		"name":"Fire_Smoke_Mode",
 		"writeable":"True",
 		"size":"16",
-		"scaling":"1"
+		"scaling":"1",
+		"signed":"True"
 	}
 },
 "input_registers":{
 	"6":{
 		"name":"Time_1",
 		"writeable":"False",
-		"size":"32"
+		"size":"32",
+		"signed":"False"
 	},
 	"8":{
 		"name":"Filter_Time",
 		"writeable":"False",
-		"size":"16"
+		"size":"16",
+		"signed":"False"
 	},
 	"9":{
 		"name":"Supply_Air_temp",
 		"writeable":"False",
 		"size":"16",
 		"unit":"°C",
-		"scaling":"10"
+		"scaling":"10",
+		"signed":"True"
 	},
 	"10":{
 		"name":"Extract_Air_temp",
 		"writeable":"False",
 		"size":"16",
 		"unit":"°C",
-		"scaling":"10"
+		"scaling":"10",
+		"signed":"True"
 	},
 	"11":{
 		"name":"Outdoor_Air_temp",
 		"writeable":"False",
 		"size":"16",
 		"unit":"°C",
-		"scaling":"10"
+		"scaling":"10",
+		"signed":"True"
 	},
 	"14":{
 		"name":"Heat_Exchanger",
 		"writeable":"False",
 		"size":"16",
-		"unit":"%"
+		"unit":"%",
+		"signed":"False"
 	},
 	"17":{
 		"name":"Operational_Time",
 		"writeable":"False",
 		"size":"16",
-		"unit":"%"
+		"unit":"%",
+		"signed":"False"
 	},
 	"26":{
 		"name":"Rotor_Alarm",
 		"writeable":"False",
-		"size":"16"
+		"size":"16",
+		"signed":"False"
 	},
 	"27":{
 		"name":"Filter_Alarm",
 		"writeable":"False",
-		"size":"16"
+		"size":"16",
+		"signed":"False"
 	},
 	"28":{
 		"name":"Heating_Active",
 		"writeable":"False",
-		"size":"16"
+		"size":"16",
+		"signed":"False"
 	},
 	"32":{
 		"name":"Speed_1_counter",
 		"writeable":"False",
-		"size":"32"
+		"size":"32",
+		"signed":"False"
 	},
 	"34":{
 		"name":"Speed_2_counter",
 		"writeable":"False",
-		"size":"32"
+		"size":"32",
+		"signed":"False"
 	},
 	"36":{
 		"name":"Speed_3_counter",
 		"writeable":"False",
-		"size":"32"
+		"size":"32",
+		"signed":"False"
 	},
 	"42":{
 		"name":"Total_run_counter",
 		"writeable":"False",
-		"size":"32"
+		"size":"32",
+		"signed":"False"
 	},
 	"47":{
 		"name":"Actual_set_air_temperature",
 		"writeable":"False",
 		"size":"16",
-		"scaling":"10"
+		"scaling":"10",
+		"signed":"True"
 	},
 	"48":{
 		"name":"Actual_set_air_speed",
 		"writeable":"False",
-		"size":"16"
+		"size":"16",
+		"signed":"True"
 	}
 
 }
