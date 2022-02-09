@@ -91,107 +91,31 @@ if __name__ == '__main__':
 
 
 	while True: #Main loop starts here
+	#try:
 		try:
+			data_from_mqtt = mqtt_receiver_queue.get_nowait()
 			try:
-				data_from_mqtt = mqtt_receiver_queue.get_nowait()
-				try:
-					if data_from_mqtt:
-						if data_from_mqtt['data_type'] == "holding_registers":
-							if "scaling" in settings['holding_registers'][data_from_mqtt['register']]:
-								value_to_write = int(float(data_from_mqtt['payload']) * int(settings['holding_registers'][str(data_from_mqtt['register'])]['scaling']))
-							else:
-								value_to_write = int(data_from_mqtt['payload'])
-							c.write_single_register(int(data_from_mqtt['register']), value_to_write)
-				except Exception as e:
-					print("Kunne ikke skrive til modbus pga: ", e)
+				if data_from_mqtt:
+					if data_from_mqtt['data_type'] == "holding_registers":
+						if "scaling" in settings['holding_registers'][data_from_mqtt['register']]:
+							value_to_write = int(float(data_from_mqtt['payload']) * int(settings['holding_registers'][str(data_from_mqtt['register'])]['scaling']))
+						else:
+							value_to_write = int(data_from_mqtt['payload'])
+						c.write_single_register(int(data_from_mqtt['register']), value_to_write)
 			except Exception as e:
-				None
-			for query in holding_registers: #Holding registers are read
-				try:
-					regs = c.read_holding_registers(int(query), int(holding_registers[query])) #Making the query for data
-					if regs:
-						reg_counter = 0 #Resetting counter for data in each package, separate counter is used as 32bit datas are read from two registers at the same time
-						skip_next = False
-						for reg in regs: #Looping through the registers in the received package
-							curr_reg = int(query) + reg_counter
-							#print(curr_reg)
-							#print(settings['holding_registers'][str(curr_reg)])
-							if skip_next == False: #If data is 16bit or first package of 32bit
-								if settings['holding_registers'][str(curr_reg)]['size'] == "32":
-									skip_next = True #Set to true if data is 32bit to skip reading the next package in the loop as it is being read in this run
-									high_byte = regs[reg_counter]
-									low_byte = regs[int(reg_counter) + 1]
-									if settings['holding_registers'][str(curr_reg)]['signed'] == "True":
-										final_value = functions.intjoiner16bto32bit(high_byte, low_byte) #Adding high and low byte in 32bit data
-									elif settings['holding_registers'][str(curr_reg)]['signed'] == "False":
-										final_value = functions.uintjoiner16bto32bit(high_byte, low_byte) #Adding high and low byte in 32bit data
-
-								else:
-									if settings['holding_registers'][str(curr_reg)]['signed'] == "True":
-										final_value = functions.uinttoint16bit(regs[reg_counter]) #Adding high and low byte in 32bit data
-									elif settings['holding_registers'][str(curr_reg)]['signed'] == "False":
-										final_value = regs[reg_counter]
-
-								if "scaling" in settings['holding_registers'][str(curr_reg)]: #If scaling value is included in setup file
-									final_outdata['holding_registers'][curr_reg] = str(float(final_value) / int(settings['holding_registers'][str(curr_reg)]['scaling'])) #Received value is divided with scaling factor
-								else:
-									final_outdata['holding_registers'][curr_reg] = str(final_value)
-
-							else:
-								skip_next = False #In this instance the current register is being skipped as it is the last part of a 32bit data and has already been processed
-
-							reg_counter = reg_counter + 1 #Adding 1 to the counter
-				except Exception as e:
-					print("Holding regs read error: ", curr_reg, e)
-
-			time.sleep(1/10) #Sleeping between holding and input registers as some units need this
-
-			#print("Leser input registers")
-			for query in input_registers:
-				#print(query)
-				#print(input_registers[query])
-				try:
-					regs = c.read_input_registers(int(query), int(input_registers[query]))
-					if regs:
-						reg_counter = 0
-						skip_next = False
-						for reg in regs:
-							curr_reg = int(query) + reg_counter
-							#print(settings['input_registers'][str(curr_reg)])
-							if skip_next == False:
-								if settings['input_registers'][str(curr_reg)]['size'] == "32":
-									skip_next = True #Set to true if data is 32bit to skip reading the next package in the loop as it is being read in this run
-									high_byte = regs[reg_counter]
-									low_byte = regs[int(reg_counter) + 1]
-									if settings['input_registers'][str(curr_reg)]['signed'] == "True":
-										#print("32 signed {} = {}. High = {}, low = {}".format(curr_reg, final_value, high_byte, low_byte))
-										final_value = functions.intjoiner16bto32bit(high_byte, low_byte) #Adding high and low byte in 32bit data
-									elif settings['input_registers'][str(curr_reg)]['signed'] == "False":
-										final_value = functions.uintjoiner16bto32bit(high_byte, low_byte) #Adding high and low byte in 32bit data
-										#print("32 unsigned {} = {}. High = {}, low = {}".format(curr_reg, final_value, high_byte, low_byte))
-
-								else:
-									if settings['input_registers'][str(curr_reg)]['signed'] == "True":
-										#print("16 signed {} = {}".format(curr_reg, final_value))
-										final_value = functions.uinttoint16bit(regs[reg_counter]) #Making signed int
-									elif settings['input_registers'][str(curr_reg)]['signed'] == "False":
-										#print("16 unsigned {} = {}".format(curr_reg, final_value))
-										final_value = regs[reg_counter]
-
-								if "scaling" in settings['input_registers'][str(curr_reg)]: #If scaling value is included in setup file
-									final_outdata['input_registers'][curr_reg] = str(float(final_value) / int(settings['input_registers'][str(curr_reg)]['scaling'])) #Received value is divided with scaling factor
-								else:
-									final_outdata['input_registers'][curr_reg] = str(float(final_value))
-
-							else:
-								skip_next = False
-							#print(final_value)
-							reg_counter = reg_counter + 1
-				except Exception as e:
-					print("input regs read error: ", curr_reg, e)
-
-			#print(final_outdata)
-			mqtt_sender_queue.put(final_outdata)
-			time.sleep(int(settings['modbus_settings']['read_delay'])/100)
+				print("Kunne ikke skrive til modbus pga: ", e)
 		except Exception as e:
-			print("Main loop failed due to: ", e)
+			None
+
+		final_outdata['holding_registers'] = functions.register_loop(settings['holding_registers'], c, "holding", holding_registers) #Reading holding registers
+
+		time.sleep(1/10) #Sleeping between holding and input registers as some units need this
+
+
+		final_outdata['input_registers'] = functions.register_loop(settings['input_registers'], c, "input", input_registers) #Reading input registers
+		
+		#print(final_outdata)
+		mqtt_sender_queue.put(final_outdata)
+		time.sleep(int(settings['modbus_settings']['read_delay'])/100)
+#		except Exception as e:
+#			print("Main loop failed due to: ", e)

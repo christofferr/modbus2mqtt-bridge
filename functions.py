@@ -28,3 +28,50 @@ def uinttoint16bit(byte): #This function converts a raw 16bit value from uint to
 		final_value = float(0 - int(byte_value, 2))
 
 	return(final_value)
+
+
+def register_loop(settings, request, data_type, registers):
+
+	result_holder = {}
+	for query in registers:
+		try:
+			if data_type == "input":
+				regs = request.read_input_registers(int(query), int(registers[query]))
+			elif data_type == "holding":
+				regs = request.read_holding_registers(int(query), int(registers[query]))
+
+			if regs:
+				reg_counter = 0 #Resetting counter for data in each package, separate counter is used as 32bit datas are read from two registers at the same time
+				skip_next = False
+				for reg in regs: #Looping through the registers in the received package
+					curr_reg = int(query) + reg_counter
+					#print(curr_reg)
+					#print(settings[str(curr_reg)])
+					if skip_next == False: #If data is 16bit or first package of 32bit
+						if settings[str(curr_reg)]['size'] == "32":
+							skip_next = True #Set to true if data is 32bit to skip reading the next package in the loop as it is being read in this run
+							high_byte = regs[reg_counter]
+							low_byte = regs[int(reg_counter) + 1]
+							if settings[str(curr_reg)]['signed'] == "True":
+								final_value = intjoiner16bto32bit(high_byte, low_byte) #Adding high and low byte in 32bit data
+							elif settings[str(curr_reg)]['signed'] == "False":
+								final_value = uintjoiner16bto32bit(high_byte, low_byte) #Adding high and low byte in 32bit data
+
+						else:
+							if settings[str(curr_reg)]['signed'] == "True":
+								final_value = uinttoint16bit(regs[reg_counter]) #Adding high and low byte in 32bit data
+							elif settings[str(curr_reg)]['signed'] == "False":
+								final_value = regs[reg_counter]
+
+						if "scaling" in settings[str(curr_reg)]: #If scaling value is included in setup file
+							result_holder[curr_reg] = str(float(final_value) / int(settings[str(curr_reg)]['scaling'])) #Received value is divided with scaling factor
+						else:
+							result_holder[curr_reg] = str(final_value)
+
+					else:
+						skip_next = False #In this instance the current register is being skipped as it is the last part of a 32bit data and has already been processed
+
+					reg_counter = reg_counter + 1 #Adding 1 to the counter
+		except Exception as e:
+			print("Modbus regs read error: ", e)
+	return(result_holder) #Return the final data
