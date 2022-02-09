@@ -60,9 +60,9 @@ if __name__ == '__main__':
 								value_to_write = int(data_from_mqtt['payload'])
 							c.write_single_register(int(data_from_mqtt['register']), value_to_write)
 				except Exception as e:
-					print("Kunne ikke skrive til modbus pga: ", e)
+					print("Could not write to Modbus due to: ", e)
 			except Exception as e:
-				None
+				None #Just to avoid error messages if no message was received from the queue
 
 			final_outdata['holding_registers'] = functions.register_loop(settings['holding_registers'], c, "holding", holding_registers) #Reading holding registers
 
