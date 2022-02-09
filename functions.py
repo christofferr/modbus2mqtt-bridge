@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import time
 
 def uintjoiner16bto32bit(high_byte, low_byte): #simple function that joins two 16 bit values to a uint32
 	final_value = int("{:016b}".format(int(high_byte)) + "{:016b}".format(int(low_byte)), 2)
@@ -39,7 +40,7 @@ def register_loop(settings, request, data_type, registers):
 				regs = request.read_input_registers(int(query), int(registers[query]))
 			elif data_type == "holding":
 				regs = request.read_holding_registers(int(query), int(registers[query]))
-
+				
 			if regs:
 				reg_counter = 0 #Resetting counter for data in each package, separate counter is used as 32bit datas are read from two registers at the same time
 				skip_next = False
@@ -75,3 +76,31 @@ def register_loop(settings, request, data_type, registers):
 		except Exception as e:
 			print("Modbus regs read error: ", e)
 	return(result_holder) #Return the final data
+
+
+def package_maker(settings):
+	start = True
+	registers = {}
+	for adress in settings: #Looping through  registers 
+		if start == True: #If first register in file
+			start = False #Sets first register in file to false
+			start_int = int(adress)
+			if settings[adress]['size'] == "16": #If data is 16 bits only one register is added to package
+				registers[start_int] = 1
+			elif settings[adress]['size'] == "32": # If data is 32 bits two registers is added to package
+				registers[start_int] = 2
+
+		else:
+			if int(adress) == int(start_int) + int(registers[start_int]):
+				if settings[adress]['size'] == "16": #If data is 16 bits only one register is added to package
+					registers[start_int] = int(registers[start_int] + 1)
+				elif settings[adress]['size'] == "32": # If data is 32 bits two registers is added to package
+					registers[start_int] = int(registers[start_int] + 2)
+			else:
+				start_int = adress
+				if settings[adress]['size'] == "16": #If data is 16 bits only one register is added to package
+					registers[adress] = 1
+				elif settings[adress]['size'] == "32": # If data is 32 bits two registers is added to package
+					registers[adress] = 2
+	return(registers)
+
